@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="GKX | Goal eXpress - Футбольный портал с результатами, новостями и статистикой">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>GKX | Goal eXpress</title>
+    
+    <!-- Tailwind CSS (CDN для статики) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gkx: { black: '#0a0a0a', dark: '#121212', green: '#39ff14', greenDark: '#2db30f', gray: '#2a2a2a' }
+                    },
+                    animation: {
+                        'ticker': 'ticker 35s linear infinite', 'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+                        'heart': 'heart 0.3s ease-in-out', 'gradient-shift': 'gradient-shift 8s ease infinite',
+                        'slide-in': 'slide-in 0.3s ease-out', 'bounce-in': 'bounce-in 0.5s ease-out', 'float': 'float 3s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        ticker: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-50%)' } },
+                        'pulse-glow': { '0%,100%': { textShadow: '0 0 10px rgba(57,255,20,0.5)', opacity: '1' }, '50%': { textShadow: '0 0 20px rgba(57,255,20,0.8)', opacity: '0.8' } },
+                        heart: { '0%,100%': { transform: 'scale(1)' }, '50%': { transform: 'scale(1.3)' } },
+                        'gradient-shift': { '0%,100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+                        'slide-in': { '0%': { opacity: '0', transform: 'translateY(-10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                        'bounce-in': { '0%': { opacity: '0', transform: 'scale(0.8)' }, '50%': { transform: 'scale(1.05)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
+                        float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Стили -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- БЕГУЩАЯ СТРОКА -->
+    <div class="ticker-wrap"><div class="ticker-track">
+        <span class="ticker-item">GKX | Goal eXpress</span><span class="ticker-separator">◆</span>
+        <span class="ticker-item">Live Результаты Матчей</span><span class="ticker-separator">◆</span>
+        <span class="ticker-item">GKX | Goal eXpress</span><span class="ticker-separator">◆</span>
+        <span class="ticker-item">Последние Новости Футбола</span><span class="ticker-separator">◆</span>
+        <span class="ticker-item">GKX | Goal eXpress</span><span class="ticker-separator">◆</span>
+        <span class="ticker-item">Трансферы • Голы • Эмоции</span><span class="ticker-separator">◆</span>
+        <span class="ticker-item">GKX | Goal eXpress</span><span class="ticker-separator">◆</span>
+        <span class="ticker-item">Регистрируйся и Комментируй</span><span class="ticker-separator">◆</span>
+        <!-- Дубликат -->
+        <span class="ticker-item">GKX | Goal eXpress</span><span class="ticker-separator">◆</span>
+        <span class="ticker-item">Live Результаты Матчей</span><span class="ticker-separator">◆</span>
+        <span class="ticker-item">GKX | Goal eXpress</span><span class="ticker-separator">◆</span>
+        <span class="ticker-item">Последние Новости Футбола</span><span class="ticker-separator">◆</span>
+        <span class="ticker-item">GKX | Goal eXpress</span><span class="ticker-separator">◆</span>
+        <span class="ticker-item">Трансферы • Голы • Эмоции</span><span class="ticker-separator">◆</span>
+        <span class="ticker-item">GKX | Goal eXpress</span><span class="ticker-separator">◆</span>
+        <span class="ticker-item">Регистрируйся и Комментируй</span><span class="ticker-separator">◆</span>
+    </div></div>
+
+    <!-- HEADER -->
+    <header class="border-b border-gkx-green/20 bg-gkx-dark sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="showSection('home')">
+                <div class="w-10 h-10 bg-gkx-green rounded flex items-center justify-center font-black text-gkx-black text-xl">G</div>
+                <h1 class="text-2xl font-black tracking-tighter text-white">GKX <span class="text-gkx-green neon-text">eXpress</span></h1>
+            </div>
+            <nav class="hidden md:flex gap-6 text-sm font-bold uppercase tracking-wide">
+                <a href="#" onclick="showSection('home')" class="hover:text-gkx-green transition">Главная</a>
+                <a href="#" onclick="showSection('matches')" class="hover:text-gkx-green transition">Матчи</a>
+                <a href="#" onclick="showSection('news')" class="hover:text-gkx-green transition">Новости</a>
+                <a href="#" onclick="showSection('socials')" class="hover:text-gkx-green transition">🔗 Соцсети</a>
+                <a href="#" id="admin-nav-link" onclick="checkAdminAccess()" class="text-gkx-green hover:text-white transition hidden">Админка</a>
+            </nav>
+            <div id="user-panel"><button onclick="openModal('login')" class="bg-gkx-green text-gkx-black px-5 py-2 rounded font-bold hover:bg-white transition">Войти</button></div>
+        </div>
+        <!-- Мобильное меню -->
+        <div class="md:hidden border-t border-gray-800 px-4 py-2 flex gap-3 text-xs font-bold uppercase overflow-x-auto">
+            <a href="#" onclick="showSection('home')" class="text-gray-400 hover:text-gkx-green whitespace-nowrap">Главная</a>
+            <a href="#" onclick="showSection('matches')" class="text-gray-400 hover:text-gkx-green whitespace-nowrap">Матчи</a>
+            <a href="#" onclick="showSection('news')" class="text-gray-400 hover:text-gkx-green whitespace-nowrap">Новости</a>
+            <a href="#" onclick="showSection('socials')" class="text-gkx-green whitespace-nowrap">🔗 Соцсети</a>
+            <a href="#" id="admin-nav-link-mobile" onclick="checkAdminAccess()" class="text-gkx-green hidden whitespace-nowrap">Админка</a>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        
+        <!-- СЕКЦИЯ: ГЛАВНАЯ -->
+        <div id="section-home" class="space-y-12">
+            <div class="relative h-64 md:h-96 rounded-2xl overflow-hidden border border-gkx-green/30 hero-gradient">
+                <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55" class="w-full h-full object-cover opacity-40" alt="Football">
+                <div class="absolute inset-0 hero-gradient-overlay"></div>
+                <div class="absolute bottom-0 left-0 p-8 w-full">
+                    <span class="bg-gkx-green text-gkx-black text-xs font-bold px-3 py-1.5 rounded mb-3 inline-block neon-border">GKX</span>
+                    <h2 class="text-3xl md:text-5xl font-black mb-3 leading-tight">ДОБРО ПОЖАЛОВАТЬ В <span class="text-gkx-green neon-text block mt-1">GOAL EXPRESS</span></h2>
+                    <p class="text-gray-300 text-sm md:text-base max-w-xl">⚽ Последние новости • Live результаты • Статистика • Комментарии</p>
+                </div>
+                <div class="absolute top-4 right-4 w-20 h-20 bg-gkx-green/10 rounded-full blur-xl"></div>
+                <div class="absolute bottom-20 left-10 w-32 h-32 bg-gkx-green/5 rounded-full blur-2xl"></div>
+            </div>
+            <div>
+                <div class="flex justify-between items-end mb-6 border-b border-gray-800 pb-2"><h3 class="text-2xl font-bold text-white">Последние новости</h3><a href="#" onclick="showSection('news')" class="text-gkx-green text-sm hover:underline">Все новости →</a></div>
+                <div id="home-news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+            <div>
+                <div class="flex justify-between items-end mb-6 border-b border-gray-800 pb-2"><h3 class="text-2xl font-bold text-white">Последние результаты</h3><a href="#" onclick="showSection('matches')" class="text-gkx-green text-sm hover:underline">Все матчи →</a></div>
+                <div id="home-matches-list" class="space-y-3"></div>
+            </div>
+        </div>
+
+        <!-- СЕКЦИЯ: МАТЧИ -->
+        <div id="section-matches" class="hidden space-y-6">
+            <h2 class="text-3xl font-black mb-6 border-l-4 border-gkx-green pl-4">Матчи и Таблица</h2>
+            
+            <!-- Фильтр по лигам -->
+            <div class="bg-gkx-dark rounded-xl border border-gray-800 p-6 mb-6">
+                <h3 class="text-lg font-bold text-gkx-green mb-4">🏆 Выберите лигу</h3>
+                <div id="league-filters" class="flex flex-wrap gap-2"></div>
+            </div>
+            
+            <!-- Вкладки матчей -->
+            <div class="flex gap-2 border-b border-gray-800 mb-6 overflow-x-auto pb-1">
+                <button onclick="showMatchesTab('matches')" class="match-tab-btn active">⚽ Все матчи</button>
+                <button onclick="showMatchesTab('standings')" class="match-tab-btn">📊 Турнирная таблица</button>
+            </div>
+
+            <!-- Контент: Матчи -->
+            <div id="matches-tab-matches" class="match-tab-content active">
+                <div class="bg-gkx-dark rounded-xl border border-gray-800 p-6">
+                    <h3 class="text-lg font-bold text-gkx-green mb-4">📅 Выберите дату</h3>
+                    <div id="date-filters" class="flex flex-wrap gap-2"></div>
+                    <div class="mt-4 pt-4 border-t border-gray-800"><p class="text-gray-400 text-sm"><span id="selected-date-label" class="text-gkx-green font-bold">Все даты</span><span id="matches-on-date" class="ml-2 text-gray-500"></span></p></div>
+                </div>
+                <div id="all-matches-grid" class="space-y-4 mt-6"></div>
+            </div>
+
+            <!-- Контент: Турнирная таблица -->
+            <div id="matches-tab-standings" class="match-tab-content">
+                <div class="bg-gkx-dark rounded-xl border border-gray-800 overflow-hidden">
+                    <div class="p-6 border-b border-gray-800">
+                        <h3 class="text-xl font-bold text-gkx-green">📊 Турнирная таблица</h3>
+                        <p class="text-gray-400 text-sm mt-1" id="standings-league-name">Выберите лигу для просмотра таблицы</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="standings-table">
+                            <thead>
+                                <tr>
+                                    <th class="w-12">#</th>
+                                    <th class="text-left">Команда</th>
+                                    <th class="w-12">И</th>
+                                    <th class="w-12 hide-mobile">В</th>
+                                    <th class="w-12 hide-mobile">Н</th>
+                                    <th class="w-12 hide-mobile">П</th>
+                                    <th class="w-12 hide-mobile">МЗ</th>
+                                    <th class="w-12 hide-mobile">МП</th>
+                                    <th class="w-12">РМ</th>
+                                    <th class="w-16">Очки</th>
+                                </tr>
+                            </thead>
+                            <tbody id="standings-body"></tbody>
+                        </table>
+                    </div>
+                    <div class="p-4 border-t border-gray-800 bg-gray-900/50">
+                        <div class="flex flex-wrap gap-4 text-xs">
+                            <div class="flex items-center gap-2"><div class="w-3 h-3 bg-[#39ff14] rounded"></div><span>Лига Чемпионов</span></div>
+                            <div class="flex items-center gap-2"><div class="w-3 h-3 bg-[#fbbf24] rounded"></div><span>Лига Европы</span></div>
+                            <div class="flex items-center gap-2"><div class="w-3 h-3 bg-[#ef4444] rounded"></div><span>Вылет</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- СЕКЦИЯ: НОВОСТИ -->
+        <div id="section-news" class="hidden space-y-6"><h2 class="text-3xl font-black mb-6 border-l-4 border-gkx-green pl-4">Все новости</h2><div id="all-news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>
+
+        <!-- СЕКЦИЯ: СОЦСЕТИ -->
+        <div id="section-socials" class="hidden space-y-6">
+            <h2 class="text-3xl font-black mb-6 border-l-4 border-gkx-green pl-4">Наши соцсети</h2>
+            <p class="text-gray-400 mb-8">Подписывайтесь на наши каналы, чтобы быть в курсе последних новостей футбола!</p>
+            <div id="socials-page-grid" class="socials-page"></div>
+        </div>
+
+        <!-- СЕКЦИЯ: АДМИН ПАНЕЛЬ -->
+        <div id="section-admin" class="hidden space-y-6">
+            <div class="flex justify-between items-center mb-6"><h2 class="text-3xl font-black text-gkx-green">Панель управления</h2><button onclick="logout()" class="text-red-500 hover:text-red-400 text-sm font-bold">Выйти</button></div>
+            <div class="flex gap-4 border-b border-gray-800 mb-6 overflow-x-auto">
+                <button onclick="showAdminTab('leagues')" class="admin-tab active pb-2 px-4 border-b-2 border-gkx-green text-gkx-green font-bold whitespace-nowrap">Лиги</button>
+                <button onclick="showAdminTab('matches')" class="admin-tab pb-2 px-4 border-b-2 border-transparent text-gray-400 hover:text-white whitespace-nowrap">Матчи</button>
+                <button onclick="showAdminTab('standings')" class="admin-tab pb-2 px-4 border-b-2 border-transparent text-gray-400 hover:text-white whitespace-nowrap">Таблица</button>
+                <button onclick="showAdminTab('news')" class="admin-tab pb-2 px-4 border-b-2 border-transparent text-gray-400 hover:text-white whitespace-nowrap">Новости</button>
+                <button onclick="showAdminTab('socials')" class="admin-tab pb-2 px-4 border-b-2 border-transparent text-gray-400 hover:text-white whitespace-nowrap">Соцсети</button>
+                <button onclick="showAdminTab('comments')" class="admin-tab pb-2 px-4 border-b-2 border-transparent text-gray-400 hover:text-white whitespace-nowrap">Комментарии</button>
+                <button onclick="showAdminTab('users')" class="admin-tab pb-2 px-4 border-b-2 border-transparent text-gray-400 hover:text-white whitespace-nowrap">Пользователи</button>
+            </div>
+            
+            <!-- Управление лигами -->
+            <div id="admin-leagues" class="admin-tab-content space-y-6">
+                <div class="bg-gkx-dark p-6 rounded-xl border border-gray-800">
+                    <h3 class="text-xl font-bold mb-4 text-gkx-green">Добавить лигу</h3>
+                    <form id="add-league-form" class="flex gap-4">
+                        <input type="text" id="l-name" placeholder="Название лиги (например: АПЛ)" class="flex-1 bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required>
+                        <input type="text" id="l-country" placeholder="Страна" class="flex-1 bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none">
+                        <button type="submit" class="bg-gkx-green text-gkx-black font-bold px-6 py-3 rounded hover:bg-white transition">Добавить</button>
+                    </form>
+                </div>
+                <div class="bg-gkx-dark p-6 rounded-xl border border-gray-800">
+                    <h3 class="text-xl font-bold mb-4 text-gkx-green">Все лиги (<span id="leagues-count">0</span>)</h3>
+                    <div id="admin-leagues-list" class="space-y-3"></div>
+                </div>
+            </div>
+
+            <!-- Управление матчами -->
+            <div id="admin-matches" class="admin-tab-content hidden space-y-6">
+                <div class="bg-gkx-dark p-6 rounded-xl border border-gray-800">
+                    <h3 class="text-xl font-bold mb-4 text-gkx-green">Добавить матч</h3>
+                    <form id="add-match-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <select id="m-league-select" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required></select>
+                        <input type="datetime-local" id="m-date" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required>
+                        <input type="text" id="m-home" placeholder="Хозяева" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required>
+                        <input type="text" id="m-away" placeholder="Гости" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required>
+                        <input type="text" id="m-score" placeholder="Счет (2:1)" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none">
+                        <select id="m-status" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"><option value="Scheduled">Запланирован</option><option value="Live">LIVE</option><option value="Finished">Завершен</option></select>
+                        <input type="text" id="m-stadium" placeholder="Стадион" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none">
+                        <input type="text" id="m-city" placeholder="Город" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none">
+                        <input type="text" id="m-home-coach" placeholder="Тренер хозяев" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none">
+                        <input type="text" id="m-away-coach" placeholder="Тренер гостей" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none">
+                        <textarea id="m-home-lineup" placeholder="Состав хозяев" class="md:col-span-2 bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none h-20"></textarea>
+                        <textarea id="m-away-lineup" placeholder="Состав гостей" class="md:col-span-2 bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none h-20"></textarea>
+                        <div class="md:col-span-2 grid grid-cols-2 gap-4"><input type="number" id="m-home-possession" placeholder="Владение хозяев %" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"><input type="number" id="m-away-possession" placeholder="Владение гостей %" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"></div>
+                        <div class="md:col-span-2 grid grid-cols-3 gap-4"><input type="number" id="m-home-shots" placeholder="Удары" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"><input type="number" id="m-away-shots" placeholder="Удары" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"><input type="number" id="m-home-corners" placeholder="Угловые" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"></div>
+                        <div class="md:col-span-2 border-t border-gray-700 pt-4 mt-2">
+                            <h4 class="font-bold text-gkx-green mb-3">📋 События матча</h4>
+                            <div id="events-container" class="space-y-3"></div>
+                            <button type="button" onclick="addEventField()" class="mt-3 text-gkx-green text-sm hover:text-white transition">+ Добавить событие</button>
+                        </div>
+                        <button type="submit" class="md:col-span-2 bg-gkx-green text-gkx-black font-bold py-3 rounded hover:bg-white transition">Добавить матч</button>
+                    </form>
+                </div>
+                <div class="bg-gkx-dark p-6 rounded-xl border border-gray-800"><h3 class="text-xl font-bold mb-4 text-gkx-green">Все матчи (<span id="matches-count">0</span>)</h3><div class="overflow-x-auto"><table class="w-full"><thead class="bg-gray-900 text-gray-400 text-xs uppercase"><tr><th class="p-4 text-left">Дата</th><th class="p-4 text-left">Лига</th><th class="p-4 text-center">Матч</th><th class="p-4 text-center">Счет</th><th class="p-4 text-center">Статус</th><th class="p-4 text-right">Действия</th></tr></thead><tbody id="admin-matches-body" class="divide-y divide-gray-800"></tbody></table></div></div>
+            </div>
+
+            <!-- Управление турнирной таблицей -->
+            <div id="admin-standings" class="admin-tab-content hidden space-y-6">
+                <div class="bg-gkx-dark p-6 rounded-xl border border-gray-800">
+                    <h3 class="text-xl font-bold mb-4 text-gkx-green">Добавить команду в таблицу</h3>
+                    <form id="add-standings-form" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <select id="s-league-select" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none md:col-span-2" required></select>
+                        <input type="text" id="s-team" placeholder="Команда" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required>
+                        <input type="number" id="s-played" placeholder="И" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" min="0" value="0">
+                        <input type="number" id="s-won" placeholder="В" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" min="0" value="0">
+                        <input type="number" id="s-drawn" placeholder="Н" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" min="0" value="0">
+                        <input type="number" id="s-lost" placeholder="П" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" min="0" value="0">
+                        <input type="number" id="s-gf" placeholder="МЗ" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" min="0" value="0">
+                        <input type="number" id="s-ga" placeholder="МП" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" min="0" value="0">
+                        <button type="submit" class="bg-gkx-green text-gkx-black font-bold py-3 rounded hover:bg-white transition md:col-span-2">Добавить</button>
+                    </form>
+                </div>
+                <div class="bg-gkx-dark p-6 rounded-xl border border-gray-800">
+                    <h3 class="text-xl font-bold mb-4 text-gkx-green">Редактировать таблицу</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-900 text-gray-400 text-xs uppercase">
+                                <tr>
+                                    <th class="p-4 text-left">#</th>
+                                    <th class="p-4 text-left">Лига</th>
+                                    <th class="p-4 text-left">Команда</th>
+                                    <th class="p-4 text-center">И</th>
+                                    <th class="p-4 text-center">В</th>
+                                    <th class="p-4 text-center">Н</th>
+                                    <th class="p-4 text-center">П</th>
+                                    <th class="p-4 text-center">Очки</th>
+                                    <th class="p-4 text-right">Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-standings-body" class="divide-y divide-gray-800"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Управление новостями -->
+            <div id="admin-news" class="admin-tab-content hidden space-y-6">
+                <div class="bg-gkx-dark p-6 rounded-xl border border-gray-800"><h3 class="text-xl font-bold mb-4 text-gkx-green">Добавить новость</h3><form id="add-news-form" class="space-y-4"><input type="text" id="n-title" placeholder="Заголовок" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required><textarea id="n-content" placeholder="Текст статьи" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none h-40" required></textarea><div class="border-2 border-dashed border-gray-700 rounded p-4 text-center"><p class="text-gray-400 mb-2">Загрузить изображение</p><input type="file" id="n-image-file" accept="image/*" class="hidden" onchange="previewImage(this)"><button type="button" onclick="document.getElementById('n-image-file').click()" class="bg-gray-800 px-4 py-2 rounded hover:bg-gray-700 transition">Выбрать файл</button><div id="image-preview" class="mt-4 hidden"><img class="max-h-48 mx-auto rounded"></div></div><input type="text" id="n-image-url" placeholder="Или URL изображения" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"><button type="submit" class="w-full bg-gkx-green text-gkx-black font-bold py-3 rounded hover:bg-white transition">Опубликовать</button></form></div>
+                <div class="bg-gkx-dark p-6 rounded-xl border border-gray-800"><h3 class="text-xl font-bold mb-4 text-gkx-green">Все новости (<span id="news-count">0</span>)</h3><div class="space-y-4" id="admin-news-list"></div></div>
+            </div>
+
+            <!-- Управление соцсетями -->
+            <div id="admin-socials" class="admin-tab-content hidden space-y-6">
+                <div class="bg-gkx-dark p-6 rounded-xl border border-gray-800">
+                    <h3 class="text-xl font-bold mb-4 text-gkx-green">Управление соцсетями</h3>
+                    <div id="socials-list" class="space-y-4"></div>
+                    <button type="button" onclick="addSocialField()" class="mt-4 text-gkx-green text-sm hover:text-white transition">+ Добавить соцсеть</button>
+                </div>
+            </div>
+
+            <!-- Комментарии и пользователи -->
+            <div id="admin-comments" class="admin-tab-content hidden space-y-6"><div class="bg-gkx-dark p-6 rounded-xl border border-gray-800"><h3 class="text-xl font-bold mb-4 text-gkx-green">Все комментарии (<span id="comments-count">0</span>)</h3><div class="space-y-4" id="admin-comments-list"></div></div></div>
+            <div id="admin-users" class="admin-tab-content hidden"><div class="bg-gkx-dark rounded-xl border border-gray-800 overflow-hidden"><div class="p-6 border-b border-gray-800 flex justify-between items-center"><h3 class="text-xl font-bold text-gkx-green">Пользователи (<span id="users-count">0</span>)</h3><div class="text-sm text-gray-400">Админов: <span id="admins-count" class="text-gkx-green">0</span></div></div><div class="overflow-x-auto"><table class="w-full"><thead class="bg-gray-900 text-gray-400 text-xs uppercase"><tr><th class="p-4 text-left">Пользователь</th><th class="p-4 text-left">Контакты</th><th class="p-4 text-left">Роль</th><th class="p-4 text-left">Дата</th><th class="p-4 text-right">Действия</th></tr></thead><tbody id="users-table-body" class="divide-y divide-gray-800"></tbody></table></div></div></div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-gkx-dark border-t border-gray-800 py-8 mt-12"><div class="container mx-auto px-4 text-center text-gray-500 text-sm"><p>© 2024 GKX | Goal eXpress</p></div></footer>
+
+    <!-- МОДАЛЬНЫЕ ОКНА (Логика в script.js) -->
+    <div id="modal-login" class="modal fixed inset-0 bg-black/90 hidden items-center justify-center z-50"><div class="bg-gkx-dark p-8 rounded-xl border border-gkx-green w-full max-w-md relative m-4"><button onclick="closeModal('login')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button><h2 class="text-2xl font-bold text-white mb-6 text-center">Вход в <span class="text-gkx-green">GKX</span></h2><form id="login-form" class="space-y-4"><input type="text" id="auth-nick" placeholder="Никнейм" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required><input type="email" id="auth-email" placeholder="Email" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"><input type="tel" id="auth-phone" placeholder="Телефон" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"><input type="text" id="auth-avatar" placeholder="URL аватарки" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"><button type="submit" class="w-full bg-gkx-green text-gkx-black font-bold py-3 rounded hover:bg-white transition">Войти / Регистрация</button></form></div></div>
+
+    <div id="modal-news" class="modal fixed inset-0 bg-black/95 hidden items-center justify-center z-50 overflow-y-auto"><div class="bg-gkx-dark w-full max-w-4xl my-8 mx-4 rounded-xl border border-gray-800 relative animate-slide-in"><div class="sticky top-0 right-0 p-4 flex justify-end z-20 bg-gradient-to-b from-gkx-dark to-transparent rounded-t-xl"><button onclick="closeModal('news')" class="modal-close-btn w-14 h-14 rounded-full flex items-center justify-center text-gkx-green hover:text-white animate-bounce-in" title="Закрыть"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button></div><div id="news-full-content" class="max-h-[75vh] overflow-y-auto pb-4"></div><div class="sticky bottom-0 p-4 bg-gradient-to-t from-gkx-dark to-transparent rounded-b-xl"><button onclick="closeModal('news')" class="exit-button-large w-full py-4 rounded-xl font-black text-lg tracking-wide animate-bounce-in">✕ ЗАКРЫТЬ</button></div></div></div>
+
+    <div id="modal-match" class="modal fixed inset-0 bg-black/95 hidden items-center justify-center z-50 overflow-y-auto"><div class="bg-gkx-dark w-full max-w-4xl my-8 mx-4 rounded-xl border border-gray-800 relative p-6 animate-slide-in"><button onclick="closeModal('match')" class="modal-close-btn absolute top-4 right-4 w-14 h-14 rounded-full flex items-center justify-center text-gkx-green hover:text-white z-20 animate-bounce-in" title="Закрыть"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button><div id="match-full-content"></div><div class="sticky bottom-0 p-4 bg-gradient-to-t from-gkx-dark to-transparent rounded-b-xl"><button onclick="closeModal('match')" class="exit-button-large w-full py-4 rounded-xl font-black text-lg tracking-wide animate-bounce-in">✕ ЗАКРЫТЬ</button></div></div></div>
+
+    <!-- Редактирование матча -->
+    <div id="modal-edit-match" class="modal fixed inset-0 bg-black/90 hidden items-center justify-center z-50"><div class="bg-gkx-dark p-8 rounded-xl border border-gkx-green w-full max-w-2xl relative m-4 max-h-[90vh] overflow-y-auto"><button onclick="closeModal('edit-match')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button><h2 class="text-2xl font-bold text-gkx-green mb-6">Редактировать матч</h2><form id="edit-match-form" class="space-y-4"><input type="hidden" id="edit-m-id"><select id="edit-m-league-select" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required></select><div class="grid grid-cols-2 gap-4"><input type="text" id="edit-m-league" placeholder="Лига" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required><input type="datetime-local" id="edit-m-date" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required></div><div class="grid grid-cols-2 gap-4"><input type="text" id="edit-m-home" placeholder="Хозяева" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required><input type="text" id="edit-m-away" placeholder="Гости" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required></div><div class="grid grid-cols-2 gap-4"><input type="text" id="edit-m-score" placeholder="Счет" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"><select id="edit-m-status" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"><option value="Scheduled">Запланирован</option><option value="Live">LIVE</option><option value="Finished">Завершен</option></select></div><div class="grid grid-cols-2 gap-4"><input type="text" id="edit-m-stadium" placeholder="Стадион" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"><input type="text" id="edit-m-city" placeholder="Город" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"></div><div class="grid grid-cols-2 gap-4"><input type="text" id="edit-m-home-coach" placeholder="Тренер хозяев" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"><input type="text" id="edit-m-away-coach" placeholder="Тренер гостей" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"></div><textarea id="edit-m-home-lineup" placeholder="Состав хозяев" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none h-20"></textarea><textarea id="edit-m-away-lineup" placeholder="Состав гостей" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none h-20"></textarea><div class="md:col-span-2 border-t border-gray-700 pt-4"><h4 class="font-bold text-gkx-green mb-3">📋 События матча</h4><div id="edit-events-container" class="space-y-3"></div><button type="button" onclick="addEditEventField()" class="mt-3 text-gkx-green text-sm hover:text-white transition">+ Добавить событие</button></div><div class="flex gap-4 pt-4"><button type="submit" class="flex-1 bg-gkx-green text-gkx-black font-bold py-3 rounded hover:bg-white transition">Сохранить</button><button type="button" onclick="closeModal('edit-match')" class="flex-1 bg-gray-700 text-white font-bold py-3 rounded hover:bg-gray-600 transition">Отмена</button></div></form></div></div>
+
+    <!-- Редактирование таблицы -->
+    <div id="modal-edit-standings" class="modal fixed inset-0 bg-black/90 hidden items-center justify-center z-50"><div class="bg-gkx-dark p-8 rounded-xl border border-gkx-green w-full max-w-lg relative m-4"><button onclick="closeModal('edit-standings')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button><h2 class="text-2xl font-bold text-gkx-green mb-6">Редактировать команду</h2><form id="edit-standings-form" class="space-y-4"><input type="hidden" id="edit-s-id"><select id="edit-s-league-select" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required></select><input type="text" id="edit-s-team" placeholder="Команда" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required><div class="grid grid-cols-2 gap-4"><input type="number" id="edit-s-played" placeholder="И" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" min="0"><input type="number" id="edit-s-won" placeholder="В" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" min="0"></div><div class="grid grid-cols-2 gap-4"><input type="number" id="edit-s-drawn" placeholder="Н" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" min="0"><input type="number" id="edit-s-lost" placeholder="П" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" min="0"></div><div class="grid grid-cols-2 gap-4"><input type="number" id="edit-s-gf" placeholder="МЗ" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" min="0"><input type="number" id="edit-s-ga" placeholder="МП" class="bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" min="0"></div><div class="flex gap-4 pt-4"><button type="submit" class="flex-1 bg-gkx-green text-gkx-black font-bold py-3 rounded hover:bg-white transition">Сохранить</button><button type="button" onclick="closeModal('edit-standings')" class="flex-1 bg-gray-700 text-white font-bold py-3 rounded hover:bg-gray-600 transition">Отмена</button></div></form></div></div>
+
+    <!-- Редактирование лиги -->
+    <div id="modal-edit-league" class="modal fixed inset-0 bg-black/90 hidden items-center justify-center z-50"><div class="bg-gkx-dark p-8 rounded-xl border border-gkx-green w-full max-w-md relative m-4"><button onclick="closeModal('edit-league')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button><h2 class="text-2xl font-bold text-gkx-green mb-6">Редактировать лигу</h2><form id="edit-league-form" class="space-y-4"><input type="hidden" id="edit-l-id"><input type="text" id="edit-l-name" placeholder="Название лиги" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required><input type="text" id="edit-l-country" placeholder="Страна" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"><div class="flex gap-4 pt-4"><button type="submit" class="flex-1 bg-gkx-green text-gkx-black font-bold py-3 rounded hover:bg-white transition">Сохранить</button><button type="button" onclick="closeModal('edit-league')" class="flex-1 bg-gray-700 text-white font-bold py-3 rounded hover:bg-gray-600 transition">Отмена</button></div></form></div></div>
+
+    <!-- Редактирование новости и комментария -->
+    <div id="modal-edit-news" class="modal fixed inset-0 bg-black/90 hidden items-center justify-center z-50"><div class="bg-gkx-dark p-8 rounded-xl border border-gkx-green w-full max-w-2xl relative m-4 max-h-[90vh] overflow-y-auto"><button onclick="closeModal('edit-news')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button><h2 class="text-2xl font-bold text-gkx-green mb-6">Редактировать новость</h2><form id="edit-news-form" class="space-y-4"><input type="hidden" id="edit-n-id"><input type="text" id="edit-n-title" placeholder="Заголовок" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none" required><textarea id="edit-n-content" placeholder="Текст" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none h-40" required></textarea><input type="text" id="edit-n-image" placeholder="URL изображения" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none"><div class="flex gap-4 pt-4"><button type="submit" class="flex-1 bg-gkx-green text-gkx-black font-bold py-3 rounded hover:bg-white transition">Сохранить</button><button type="button" onclick="closeModal('edit-news')" class="flex-1 bg-gray-700 text-white font-bold py-3 rounded hover:bg-gray-600 transition">Отмена</button></div></form></div></div>
+    <div id="modal-edit-comment" class="modal fixed inset-0 bg-black/90 hidden items-center justify-center z-50"><div class="bg-gkx-dark p-8 rounded-xl border border-gkx-green w-full max-w-lg relative m-4"><button onclick="closeModal('edit-comment')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button><h2 class="text-2xl font-bold text-gkx-green mb-6">Редактировать комментарий</h2><form id="edit-comment-form" class="space-y-4"><input type="hidden" id="edit-c-id"><input type="hidden" id="edit-c-type"><input type="hidden" id="edit-c-item-id"><textarea id="edit-c-text" placeholder="Текст" class="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-gkx-green outline-none h-32" required></textarea><div class="flex gap-4 pt-4"><button type="submit" class="flex-1 bg-gkx-green text-gkx-black font-bold py-3 rounded hover:bg-white transition">Сохранить</button><button type="button" onclick="closeModal('edit-comment')" class="flex-1 bg-gray-700 text-white font-bold py-3 rounded hover:bg-gray-600 transition">Отмена</button></div></form></div></div>
+    <div id="modal-confirm" class="modal fixed inset-0 bg-black/90 hidden items-center justify-center z-50"><div class="bg-gkx-dark p-8 rounded-xl border border-red-500/50 w-full max-w-md relative m-4"><h2 class="text-2xl font-bold text-red-500 mb-4 text-center">Подтверждение</h2><p id="confirm-message" class="text-gray-300 mb-6 text-center"></p><div class="flex gap-4"><button id="confirm-yes" class="flex-1 bg-red-500 text-white font-bold py-3 rounded hover:bg-red-600 transition">Удалить</button><button onclick="closeModal('confirm')" class="flex-1 bg-gray-700 text-white font-bold py-3 rounded hover:bg-gray-600 transition">Отмена</button></div></div></div>
+
+    <!-- Скрипт -->
+    <script src="js/script.js"></script>
+</body>
+</html>

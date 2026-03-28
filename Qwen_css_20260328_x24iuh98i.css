@@ -1,0 +1,121 @@
+* { -webkit-tap-highlight-color: transparent; }
+body { background-color: #0a0a0a; color: white; overflow-x: hidden; }
+.neon-text { text-shadow: 0 0 10px rgba(57, 255, 20, 0.5); }
+.neon-border { box-shadow: 0 0 5px rgba(57, 255, 20, 0.2); }
+::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: #121212; } ::-webkit-scrollbar-thumb { background: #39ff14; border-radius: 4px; }
+.modal { backdrop-filter: blur(5px); } .admin-row:hover { background-color: rgba(57, 255, 20, 0.05); }
+
+/* Бегущая строка */
+.ticker-wrap { position: relative; overflow: hidden; white-space: nowrap; background: linear-gradient(90deg, #0a0a0a 0%, #0f0f0f 10%, #121212 50%, #0f0f0f 90%, #0a0a0a 100%); border-bottom: 2px solid rgba(57,255,20,0.3); box-shadow: 0 5px 20px rgba(57,255,20,0.1); height: 50px; display: flex; align-items: center; }
+.ticker-wrap::before, .ticker-wrap::after { content: ''; position: absolute; top: 0; width: 100px; height: 100%; z-index: 2; pointer-events: none; }
+.ticker-wrap::before { left: 0; background: linear-gradient(90deg, #0a0a0a 0%, transparent 100%); }
+.ticker-wrap::after { right: 0; background: linear-gradient(90deg, transparent 0%, #0a0a0a 100%); }
+.ticker-track { display: flex; align-items: center; animation: ticker 35s linear infinite; }
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-item { display: inline-flex; align-items: center; padding: 0 3rem; color: #39ff14; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; font-size: 14px; white-space: nowrap; animation: pulse-glow 2s ease-in-out infinite; text-shadow: 0 0 10px rgba(57,255,20,0.5); position: relative; }
+.ticker-item::before { content: '⚽'; margin-right: 12px; font-size: 16px; animation: pulse-glow 1s ease-in-out infinite; }
+.ticker-item::after { content: '⚽'; margin-left: 12px; font-size: 16px; animation: pulse-glow 1s ease-in-out infinite; animation-delay: 0.5s; }
+.ticker-separator { color: rgba(57,255,20,0.3); font-size: 20px; margin: 0 1rem; }
+
+/* Градиенты */
+.hero-gradient { background: linear-gradient(135deg, rgba(10,10,10,0.9) 0%, rgba(18,18,18,0.8) 25%, rgba(57,255,20,0.15) 50%, rgba(18,18,18,0.8) 75%, rgba(10,10,10,0.95) 100%); background-size: 200% 200%; animation: gradient-shift 8s ease infinite; }
+.hero-gradient-overlay { background: linear-gradient(to bottom, transparent 0%, rgba(10,10,10,0.3) 50%, rgba(10,10,10,1) 100%); }
+.league-bundesliga { background: linear-gradient(135deg, rgba(220,0,0,0.3) 0%, rgba(18,18,18,0.8) 100%); border-left: 3px solid #dc0000; }
+.league-rpl { background: linear-gradient(135deg, rgba(0,100,255,0.3) 0%, rgba(255,0,0,0.2) 50%, rgba(18,18,18,0.8) 100%); border-left: 3px solid #0064ff; }
+.league-epl { background: linear-gradient(135deg, rgba(0,100,255,0.3) 0%, rgba(57,255,20,0.2) 50%, rgba(18,18,18,0.8) 100%); border-left: 3px solid #0064ff; }
+.league-laliga { background: linear-gradient(135deg, rgba(255,140,0,0.3) 0%, rgba(255,255,255,0.1) 50%, rgba(18,18,18,0.8) 100%); border-left: 3px solid #ff8c00; }
+.league-seriea { background: linear-gradient(135deg, rgba(0,180,220,0.3) 0%, rgba(18,18,18,0.8) 100%); border-left: 3px solid #00b4dc; }
+.league-default { background: linear-gradient(135deg, rgba(57,255,20,0.15) 0%, rgba(18,18,18,0.8) 100%); border-left: 3px solid #39ff14; }
+
+/* Кнопки */
+.modal-close-btn { transition: all 0.3s ease; background: linear-gradient(135deg, rgba(57,255,20,0.2) 0%, rgba(57,255,20,0.1) 100%); border: 2px solid rgba(57,255,20,0.5); box-shadow: 0 0 15px rgba(57,255,20,0.3); }
+.modal-close-btn:hover { background: linear-gradient(135deg, rgba(57,255,20,0.4) 0%, rgba(57,255,20,0.2) 100%); border-color: #39ff14; transform: rotate(90deg) scale(1.1); box-shadow: 0 0 25px rgba(57,255,20,0.6); }
+.exit-button-large { background: linear-gradient(135deg, #39ff14 0%, #2db30f 100%); color: #0a0a0a; border: 2px solid #39ff14; box-shadow: 0 0 20px rgba(57,255,20,0.4); transition: all 0.3s ease; }
+.exit-button-large:hover { background: linear-gradient(135deg, #2db30f 0%, #39ff14 100%); box-shadow: 0 0 30px rgba(57,255,20,0.8); transform: translateY(-2px); }
+.exit-button-large:active { transform: translateY(0); box-shadow: 0 0 15px rgba(57,255,20,0.4); }
+.date-filter-btn, .league-filter-btn { transition: all 0.3s ease; border: 1px solid rgba(57,255,20,0.2); }
+.date-filter-btn:hover, .league-filter-btn:hover { border-color: #39ff14; background: rgba(57,255,20,0.1); }
+.date-filter-btn.active, .league-filter-btn.active { background: #39ff14; color: #0a0a0a; border-color: #39ff14; font-weight: 700; }
+.like-btn { transition: all 0.2s ease; } .like-btn:hover { transform: scale(1.1); } .like-btn.liked { color: #ff4757; } .like-btn.liked svg { animation: heart 0.3s ease-in-out; }
+
+/* Вкладки матча */
+.match-tab-btn { padding: 12px 20px; border: none; background: transparent; color: #888; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border-bottom: 3px solid transparent; }
+.match-tab-btn:hover { color: #fff; } .match-tab-btn.active { color: #39ff14; border-bottom-color: #39ff14; }
+.match-tab-content { display: none; } .match-tab-content.active { display: block; animation: slide-in 0.3s ease-out; }
+
+/* События матча */
+.event-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 8px; border-left: 3px solid transparent; transition: all 0.2s ease; }
+.event-item:hover { background: rgba(255,255,255,0.08); }
+.event-item.goal { border-left-color: #39ff14; } .event-item.yellow { border-left-color: #fbbf24; } .event-item.red { border-left-color: #ef4444; } .event-item.sub { border-left-color: #60a5fa; } .event-item.penalty { border-left-color: #a855f7; }
+.event-minute { background: #39ff14; color: #0a0a0a; font-weight: 800; font-size: 12px; padding: 4px 10px; border-radius: 20px; min-width: 40px; text-align: center; }
+.event-icon { font-size: 20px; } .event-player { font-weight: 600; color: #fff; } .event-team { font-size: 12px; color: #888; margin-left: auto; } .event-extra { font-size: 11px; color: #666; margin-left: 8px; }
+.event-form { background: rgba(57,255,20,0.05); border: 1px solid rgba(57,255,20,0.3); border-radius: 8px; padding: 12px; margin-bottom: 8px; }
+.event-form input, .event-form select { background: #0a0a0a; border: 1px solid #333; color: #fff; padding: 8px 12px; border-radius: 6px; font-size: 13px; }
+.event-form input:focus, .event-form select:focus { outline: none; border-color: #39ff14; }
+
+/* Информация о матче */
+.match-info-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(57,255,20,0.2); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.match-info-label { color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.match-info-value { color: #fff; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.match-info-icon { color: #39ff14; font-size: 18px; }
+.coach-card { background: linear-gradient(135deg, rgba(57,255,20,0.1) 0%, rgba(18,18,18,0.8) 100%); border-radius: 12px; padding: 16px; text-align: center; border: 1px solid rgba(57,255,20,0.2); }
+.coach-icon { font-size: 32px; margin-bottom: 8px; }
+.coach-name { font-weight: 700; color: #fff; margin-bottom: 4px; }
+.coach-team { color: #888; font-size: 13px; }
+
+/* Турнирная таблица */
+.standings-table { width: 100%; border-collapse: collapse; }
+.standings-table th { background: rgba(57,255,20,0.1); color: #39ff14; padding: 12px 8px; text-align: center; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+.standings-table td { padding: 12px 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.standings-table tr:hover { background: rgba(57,255,20,0.05); }
+.standings-table .team-cell { text-align: left; font-weight: 600; color: #fff; }
+.standings-table .pos-cell { font-weight: 700; }
+.standings-table .pos-1, .standings-table .pos-2, .standings-table .pos-3, .standings-table .pos-4 { color: #39ff14; }
+.standings-table .pos-relegation { color: #ef4444; }
+.standings-table .points-cell { font-weight: 700; color: #39ff14; font-size: 16px; }
+.zone-indicator { width: 4px; height: 100%; position: absolute; left: 0; top: 0; }
+.zone-ucl { background: #39ff14; }
+.zone-uel { background: #fbbf24; }
+.zone-relegation { background: #ef4444; }
+.table-row { position: relative; padding-left: 8px; }
+
+/* Карточки соцсетей */
+.social-card { background: linear-gradient(135deg, rgba(57,255,20,0.1) 0%, rgba(18,18,18,0.9) 100%); border: 2px solid rgba(57,255,20,0.3); border-radius: 16px; padding: 20px; text-align: center; transition: all 0.3s ease; animation: float 3s ease-in-out infinite; }
+.social-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(57,255,20,0.3); border-color: #39ff14; }
+.social-icon { width: 60px; height: 60px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 28px; }
+.social-icon.telegram { background: linear-gradient(135deg, #0088cc, #006699); }
+.social-icon.vk { background: linear-gradient(135deg, #0077ff, #0055cc); }
+.social-icon.youtube { background: linear-gradient(135deg, #ff0000, #cc0000); }
+.social-icon.instagram { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.social-icon.twitter { background: linear-gradient(135deg, #1da1f2, #0d8bd9); }
+.social-name { font-weight: 700; font-size: 16px; margin-bottom: 8px; color: #fff; }
+.social-handle { color: #888; font-size: 14px; margin-bottom: 16px; }
+.social-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: #39ff14; color: #0a0a0a; border-radius: 25px; font-weight: 700; text-decoration: none; transition: all 0.3s ease; }
+.social-btn:hover { background: #fff; box-shadow: 0 0 20px rgba(57,255,20,0.6); }
+
+/* Прогнозы */
+.coming-soon { text-align: center; padding: 40px 20px; color: #666; }
+.coming-soon-icon { font-size: 60px; margin-bottom: 20px; animation: pulse-glow 2s infinite; }
+.coming-soon-text { font-size: 18px; font-weight: 600; color: #888; margin-bottom: 10px; }
+.coming-soon-sub { font-size: 14px; color: #555; }
+
+/* Страница соцсетей */
+.socials-page { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+
+/* Адаптация */
+@media (max-width: 768px) {
+    .ticker-item { padding: 0 1.5rem; font-size: 12px; } .ticker-item::before, .ticker-item::after { font-size: 14px; margin: 0 8px; }
+    .hero-gradient { height: 200px; } h2.text-3xl { font-size: 1.5rem; }
+    .modal-close-btn { width: 50px; height: 50px; } .exit-button-large { padding: 16px 32px; font-size: 18px; }
+    .match-tab-btn { padding: 10px 14px; font-size: 13px; } .social-card { padding: 16px; }
+    .socials-page { grid-template-columns: 1fr; }
+    .standings-table { font-size: 12px; }
+    .standings-table th, .standings-table td { padding: 8px 4px; }
+    .hide-mobile { display: none; }
+}
+@media (max-width: 480px) {
+    .ticker-wrap { height: 40px; } .ticker-item { padding: 0 1rem; font-size: 11px; }
+    .hero-gradient { height: 180px; } h2.text-3xl { font-size: 1.25rem; } .modal-close-btn { width: 48px; height: 48px; }
+}
+@media (orientation: landscape) and (max-height: 500px) { .hero-gradient { height: 150px; } .modal { align-items: flex-start; padding-top: 20px; } }
+@supports (-webkit-touch-callout: none) { input, select, textarea { font-size: 16px; } }
